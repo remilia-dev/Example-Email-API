@@ -1,17 +1,25 @@
-﻿using MimeKit;
+﻿using JsonApiDotNetCore.Resources;
+using JsonApiDotNetCore.Resources.Annotations;
+using MimeKit;
 
 namespace BaseAPI.Model
 {
-    public class Message
+    public class Message : Identifiable<int>
     {
-        public int Id { get; private set; }
+        [Attr]
         public string Sender { get; set; } = "";
+        [Attr]
         public string Subject { get; set; } = "";
+        [Attr]
         public string HtmlBody { get; set; } = "";
+        [Attr]
         public bool? WasSent { get; set; }
+        [Attr]
         public DateTime CreatedOn { get; internal set; }
+        [Attr]
         public DateTime LastModifiedOn { get; internal set; }
 
+        [HasMany]
         public virtual ICollection<Recipient> Recipients { get; set; } = new List<Recipient>();
 
         /// <summary>

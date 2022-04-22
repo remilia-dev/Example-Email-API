@@ -1,11 +1,18 @@
-﻿namespace BaseAPI.Model
+﻿using JsonApiDotNetCore.Resources;
+using JsonApiDotNetCore.Resources.Annotations;
+
+namespace BaseAPI.Model
 {
-    public class Recipient
+    public class Recipient : Identifiable<int>
     {
-        public int Id { get; private set; }
-        public Message? Message { get; private set; }
+        public int MessageId { get; private set; }
+        [Attr]
         public string Address { get; set; }
+        [Attr]
         public RecipientType Type { get; set; }
+
+        [HasOne]
+        public Message? Message { get; private set; }
 
         public Recipient(string address, RecipientType type = RecipientType.To)
         {
