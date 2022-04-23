@@ -7,7 +7,7 @@
         public string Address { get; set; }
         public RecipientType Type { get; set; }
 
-        public Message? Message { get; set; }
+        public virtual Message? Message { get; set; }
 
         public Recipient(string address, RecipientType type = RecipientType.To)
         {
