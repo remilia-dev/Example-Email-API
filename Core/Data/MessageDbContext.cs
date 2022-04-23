@@ -1,8 +1,8 @@
-﻿using BaseAPI.Model;
+﻿using Mailer.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace BaseAPI.Data
+namespace Mailer.Core.Data
 {
     public class MessageDbContext : DbContext
     {

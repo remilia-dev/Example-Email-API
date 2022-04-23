@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace BaseAPI.Model
+namespace Mailer.Core.Model
 {
     [Index(nameof(Address))]
     public class Recipient

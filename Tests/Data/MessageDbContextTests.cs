@@ -1,5 +1,5 @@
-﻿using BaseAPI.Data;
-using BaseAPI.Model;
+﻿using Mailer.Core.Data;
+using Mailer.Core.Model;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;

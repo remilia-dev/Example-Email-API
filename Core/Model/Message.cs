@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
-namespace BaseAPI.Model
+namespace Mailer.Core.Model
 {
     [Index(nameof(Sender))]
     [Index(nameof(CreatedOn))]

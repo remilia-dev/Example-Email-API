@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using BaseAPI.Model;
+using Mailer.Core.Model;
 using MimeKit;
 using Xunit;
 

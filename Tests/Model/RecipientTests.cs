@@ -1,4 +1,4 @@
-﻿using BaseAPI.Model;
+﻿using Mailer.Core.Model;
 using Xunit;
 
 namespace Tests.Model
