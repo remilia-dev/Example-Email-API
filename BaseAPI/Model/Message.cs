@@ -1,7 +1,10 @@
-﻿using MimeKit;
+using Microsoft.EntityFrameworkCore;
+using MimeKit;
 
 namespace BaseAPI.Model
 {
+    [Index(nameof(Sender))]
+    [Index(nameof(CreatedOn))]
     public class Message
     {
         public int Id { get; set; }

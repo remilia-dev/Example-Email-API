@@ -1,5 +1,8 @@
-﻿namespace BaseAPI.Model
+using Microsoft.EntityFrameworkCore;
+
+namespace BaseAPI.Model
 {
+    [Index(nameof(Address))]
     public class Recipient
     {
         public int Id { get; set; }
