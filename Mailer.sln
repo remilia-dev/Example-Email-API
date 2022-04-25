@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mailer.Core", "Core\Mailer.Core.csproj", "{56E9988E-E78A-44F8-AD99-F5D163AD1A22}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mailer.OData", "OData\Mailer.OData.csproj", "{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +23,10 @@ Global
 		{56E9988E-E78A-44F8-AD99-F5D163AD1A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56E9988E-E78A-44F8-AD99-F5D163AD1A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56E9988E-E78A-44F8-AD99-F5D163AD1A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
