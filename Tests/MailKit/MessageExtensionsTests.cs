@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 
 using Mailer.Core.Model;
+using Mailer.MailKit;
 using MimeKit;
 using Xunit;
 
-namespace Mailer.Tests.Model;
+namespace Mailer.Tests.MailKit;
 
-public class MessageTests
+public class MessageExtensionsTests
 {
     [Fact]
     public void ToMimeMessage_CorrectlyConvertsValidMessage()

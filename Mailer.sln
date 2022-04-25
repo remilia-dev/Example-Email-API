@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mailer.Core", "Core\Mailer.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mailer.OData", "OData\Mailer.OData.csproj", "{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailer.MailKit", "MailKit\Mailer.MailKit.csproj", "{D43FD83A-A64A-419F-8309-D9DEA1B0577C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{879EBF54-1D9B-4E56-A026-E8ECCF0E9FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D43FD83A-A64A-419F-8309-D9DEA1B0577C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D43FD83A-A64A-419F-8309-D9DEA1B0577C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D43FD83A-A64A-419F-8309-D9DEA1B0577C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D43FD83A-A64A-419F-8309-D9DEA1B0577C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
