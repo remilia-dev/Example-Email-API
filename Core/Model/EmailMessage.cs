@@ -4,7 +4,7 @@ namespace Mailer.Core.Model;
 
 [Index(nameof(Sender))]
 [Index(nameof(CreatedOn))]
-public class Message
+public class EmailMessage
 {
     public int Id { get; set; }
     public string Sender { get; set; } = "";
@@ -14,5 +14,5 @@ public class Message
     public DateTime CreatedOn { get; internal set; }
     public DateTime LastModifiedOn { get; internal set; }
 
-    public virtual ICollection<Recipient> Recipients { get; set; } = new List<Recipient>();
+    public virtual ICollection<EmailRecipient> Recipients { get; set; } = new List<EmailRecipient>();
 }

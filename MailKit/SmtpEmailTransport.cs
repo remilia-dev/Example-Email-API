@@ -16,7 +16,7 @@ public class SmtpEmailTransport : IEmailTransport
         _options = options.Value;
     }
 
-    public async Task SendEmailAsync(Message message, CancellationToken cancelToken = default)
+    public async Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken = default)
     {
         try
         {

@@ -2,7 +2,8 @@
 using MimeKit;
 
 namespace Mailer.MailKit;
-public static class MessageExtensions
+
+public static class EmailMessageExtensions
 {
     /// <summary>
     /// Converts this message into a MimeMessage.
@@ -11,7 +12,7 @@ public static class MessageExtensions
     /// Thrown if <see cref="Sender"/> is an invalid email address or if
     /// <see cref="Recipients">any recipient</see> has an invalid email address.
     /// </exception>
-    public static MimeMessage ToMimeMessage(this Message m)
+    public static MimeMessage ToMimeMessage(this EmailMessage m)
     {
         var bodyBuilder = new BodyBuilder()
         {

@@ -9,16 +9,16 @@ namespace Mailer.OData.Controllers;
 
 public class RecipientsController : ODataController
 {
-    private readonly MessageDbContext _db;
-    public RecipientsController(MessageDbContext db)
+    private readonly EmailDbContext _db;
+    public RecipientsController(EmailDbContext db)
     {
         _db = db;
     }
 
     [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Supported & ~AllowedQueryOptions.Expand)]
-    public IQueryable<Recipient> Get() => _db.Recipients;
+    public IQueryable<EmailRecipient> Get() => _db.Recipients;
 
     [EnableQuery]
-    public SingleResult<Recipient> GetRecipient([FromODataUri] int key)
+    public SingleResult<EmailRecipient> GetEmailRecipient([FromODataUri] int key)
         => SingleResult.Create(_db.Recipients.Where(r => r.Id == key));
 }

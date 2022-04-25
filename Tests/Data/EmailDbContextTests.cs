@@ -8,9 +8,9 @@ using Xunit;
 
 namespace Mailer.Tests.Data;
 
-public class MessageDbContextTests : IAsyncLifetime
+public class EmailDbContextTests : IAsyncLifetime
 {
-    private MessageDbContext _context = null!;
+    private EmailDbContext _context = null!;
 
     public async Task InitializeAsync()
     {
@@ -21,7 +21,7 @@ public class MessageDbContextTests : IAsyncLifetime
         var options = new DbContextOptionsBuilder()
             .UseSqlite(connection)
             .Options;
-        _context = new MessageDbContext(options);
+        _context = new EmailDbContext(options);
         await _context.Database.EnsureCreatedAsync();
     }
 
@@ -34,7 +34,7 @@ public class MessageDbContextTests : IAsyncLifetime
     [Fact]
     public async Task NewMessages_HaveCorrectCreatedAndLastModifiedTime()
     {
-        var message = new Message();
+        var message = new EmailMessage();
         await _context.Messages.AddAsync(message);
         var beforeSave = DateTime.UtcNow;
         await _context.SaveChangesAsync();
@@ -48,7 +48,7 @@ public class MessageDbContextTests : IAsyncLifetime
     [Fact]
     public async Task UpdatedMessages_HaveOnlyLastModifiedOnUpdated()
     {
-        var message = new Message();
+        var message = new EmailMessage();
         await _context.Messages.AddAsync(message);
         await _context.SaveChangesAsync();
         var previousCreatedOn = message.CreatedOn;

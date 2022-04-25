@@ -3,13 +3,13 @@ using Xunit;
 
 namespace Mailer.Tests.Model;
 
-public class RecipientTests
+public class EmailRecipientTests
 {
     [Fact]
     public void Recipient_Type_DefaultsToTo()
     {
         Assert.Equal(RecipientType.To,
-            new Recipient("valid@example.org").Type);
+            new EmailRecipient("valid@example.org").Type);
     }
 
     [Fact]

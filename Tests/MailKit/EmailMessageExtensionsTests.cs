@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Mailer.Tests.MailKit;
 
-public class MessageExtensionsTests
+public class EmailMessageExtensionsTests
 {
     [Fact]
     public void ToMimeMessage_CorrectlyConvertsValidMessage()
@@ -15,16 +15,16 @@ public class MessageExtensionsTests
         const string TO_RECIPIENT = "to@example.org";
         const string CC_RECIPIENT = "carbon_copy@example.org";
         const string BCC_RECIPIENT = "blind_carbon_copy@example.org";
-        var validMessage = new Message()
+        var validMessage = new EmailMessage()
         {
             Sender = "sender@example.org",
             Subject = "Subject Line",
             HtmlBody = "<b>HTML Body</b>",
-            Recipients = new List<Recipient>()
+            Recipients = new List<EmailRecipient>()
             {
-                new Recipient(TO_RECIPIENT),
-                new Recipient(CC_RECIPIENT, RecipientType.Cc),
-                new Recipient(BCC_RECIPIENT, RecipientType.Bcc),
+                new EmailRecipient(TO_RECIPIENT),
+                new EmailRecipient(CC_RECIPIENT, RecipientType.Cc),
+                new EmailRecipient(BCC_RECIPIENT, RecipientType.Bcc),
             },
         };
 
@@ -44,7 +44,7 @@ public class MessageExtensionsTests
     [Fact]
     public void ToMimeMessage_ThrowsOnInvalidSender()
     {
-        var invalidMessage = new Message()
+        var invalidMessage = new EmailMessage()
         {
             Sender = "not a valid email address",
         };
@@ -56,12 +56,12 @@ public class MessageExtensionsTests
     [Fact]
     public void ToMimeMessage_ThrowsOnInvalidRecipient()
     {
-        var invalidMessage = new Message()
+        var invalidMessage = new EmailMessage()
         {
             Sender = "valid@example.org",
-            Recipients = new List<Recipient>()
+            Recipients = new List<EmailRecipient>()
             {
-                new Recipient("definitely not a valid email")
+                new EmailRecipient("definitely not a valid email")
             },
         };
 

@@ -6,7 +6,7 @@ using Mailer.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add Services
-builder.Services.AddDbContext<MessageDbContext>(options =>
+builder.Services.AddDbContext<EmailDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("EmailDatabase");
     options.UseSqlServer(connectionString);
@@ -39,20 +39,20 @@ app.Run();
 static async Task CreateDatabaseAsync(IServiceProvider services)
 {
     await using var scope = services.CreateAsyncScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<MessageDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
     await dbContext.Database.EnsureCreatedAsync();
 
     if (!dbContext.Messages.Any())
     {
-        var message = new Message()
+        var message = new EmailMessage()
         {
             Sender = "example@example.org",
             Subject = "Hallo",
-            Recipients = new List<Recipient>()
+            Recipients = new List<EmailRecipient>()
             {
-                new Recipient("to@example.org"),
-                new Recipient("to_someone@example.org"),
-                new Recipient("cc@example.org", RecipientType.Cc),
+                new EmailRecipient("to@example.org"),
+                new EmailRecipient("to_someone@example.org"),
+                new EmailRecipient("cc@example.org", RecipientType.Cc),
             },
         };
         dbContext.Messages.Add(message);

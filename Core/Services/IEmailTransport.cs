@@ -14,5 +14,5 @@ public interface IEmailTransport
     /// Since this may be due to external variables (like Internet connectivity), trying
     /// again may result in the email being sent.
     /// </exception>
-    Task SendEmailAsync(Message message, CancellationToken cancelToken = default);
+    Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken = default);
 }

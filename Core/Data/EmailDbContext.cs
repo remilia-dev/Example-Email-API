@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Mailer.Core.Data;
 
-public class MessageDbContext : DbContext
+public class EmailDbContext : DbContext
 {
-    public DbSet<Message> Messages => Set<Message>();
-    public DbSet<Recipient> Recipients => Set<Recipient>();
+    public DbSet<EmailMessage> Messages => Set<EmailMessage>();
+    public DbSet<EmailRecipient> Recipients => Set<EmailRecipient>();
 
-    public MessageDbContext(DbContextOptions options) : base(options) { }
+    public EmailDbContext(DbContextOptions options) : base(options) { }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -25,7 +25,7 @@ public class MessageDbContext : DbContext
 
     protected virtual void BeforeSaveChanges()
     {
-        foreach (var entity in ChangeTracker.Entries<Message>())
+        foreach (var entity in ChangeTracker.Entries<EmailMessage>())
         {
             var message = entity.Entity;
             switch (entity.State)
@@ -43,10 +43,10 @@ public class MessageDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Message>()
+        modelBuilder.Entity<EmailMessage>()
             .Property(e => e.CreatedOn)
             .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
-        modelBuilder.Entity<Recipient>()
+        modelBuilder.Entity<EmailRecipient>()
             .Property(e => e.Type)
             .HasConversion<int>();
     }

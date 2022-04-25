@@ -10,7 +10,7 @@ public static class EdmModelBuilder
     {
         var builder = new ODataConventionModelBuilder();
 
-        builder.EntitySet<Message>("Messages").EntityType
+        builder.EntitySet<EmailMessage>("Messages").EntityType
             .Count()
             .Expand(0, SelectExpandType.Automatic, "Recipients")
             .Filter("Sender", "WasSent", "CreatedOn")
@@ -18,7 +18,7 @@ public static class EdmModelBuilder
             .OrderBy("Sender", "CreatedOn")
             .Page(50, 25);
 
-        builder.EntitySet<Recipient>("Recipients").EntityType
+        builder.EntitySet<EmailRecipient>("Recipients").EntityType
             .Expand(0, "Message")
             .Filter("Address", "Type")
             .OrderBy("Address")
