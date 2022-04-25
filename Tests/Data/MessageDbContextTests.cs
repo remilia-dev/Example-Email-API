@@ -8,19 +8,27 @@ using Xunit;
 
 namespace Mailer.Tests.Data;
 
-public class MessageDbContextTests
+public class MessageDbContextTests : IAsyncLifetime
 {
-    private readonly MessageDbContext _context;
+    private MessageDbContext _context = null!;
 
-    public MessageDbContextTests()
+    public async Task InitializeAsync()
     {
         var connection = new SqliteConnection("Data Source=:memory:");
-        connection.Open();
+        await connection.OpenAsync();
+        // By passing an open connection, the DbContext will not automatically close the connection.
+        // This is important as closing the connection just deletes the in-memory database.
         var options = new DbContextOptionsBuilder()
             .UseSqlite(connection)
             .Options;
         _context = new MessageDbContext(options);
-        _context.Database.EnsureCreated();
+        await _context.Database.EnsureCreatedAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _context.Database.CloseConnectionAsync();
+        await _context.DisposeAsync();
     }
 
     [Fact]
