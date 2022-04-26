@@ -43,11 +43,11 @@ public class SmtpEmailTransport : BaseEmailTransport, IDisposable
         }
         catch (Exception ex) when (ex is SocketException or IOException or ProtocolException)
         {
-            throw new TransportConnectionException("Failed to connect to SMTP server.", ex);
+            throw new EmailTransportException("Failed to connect to SMTP server.", ex);
         }
         catch (AuthenticationException ex)
         {
-            throw new TransportConnectionException("Failed to authenticate with SMTP server.", ex);
+            throw new EmailTransportException("Failed to authenticate with SMTP server.", ex);
         }
     }
 
@@ -65,25 +65,25 @@ public class SmtpEmailTransport : BaseEmailTransport, IDisposable
         }
         catch (ServiceNotConnectedException ex)
         {
-            throw new TransportConnectionException(
+            throw new EmailTransportException(
                 "SMTP client was not connected when sending message. Connection may have been lost.",
                 ex);
         }
         catch (ServiceNotAuthenticatedException ex)
         {
-            throw new TransportConnectionException(
+            throw new EmailTransportException(
                 "SMTP server requires authentication but none was provided.",
                 ex, isFatal: true);
         }
         catch (Exception ex) when (ex is InvalidOperationException or ParseException)
         {
-            throw new TransportConnectionException(
+            throw new EmailTransportException(
                 "Email message is invalid and cannot be sent.",
                 ex, isFatal: true);
         }
         catch (Exception ex) when (ex is IOException or ProtocolException or CommandException)
         {
-            throw new TransportConnectionException(
+            throw new EmailTransportException(
                 "An exception occurred while sending an email.",
                 ex);
         }
