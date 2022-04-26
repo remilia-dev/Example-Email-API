@@ -9,13 +9,17 @@ namespace Mailer.Core.Model;
 public class EmailMessage
 {
     public int Id { get; set; }
+    [Required]
     [EmailAddress]
-    public string Sender { get; set; } = "";
-    public string Subject { get; set; } = "";
-    public string HtmlBody { get; set; } = "";
+    public string? Sender { get; set; }
+    [Required]
+    public string? Subject { get; set; }
+    [Required]
+    public string? HtmlBody { get; set; }
     public bool? WasSent { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime LastModifiedOn { get; set; }
-
-    public virtual ICollection<EmailRecipient> Recipients { get; set; } = new List<EmailRecipient>();
+    [Required]
+    [MinLength(1)]
+    public virtual ICollection<EmailRecipient>? Recipients { get; set; }
 }
