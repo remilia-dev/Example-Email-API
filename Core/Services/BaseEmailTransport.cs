@@ -36,12 +36,18 @@ public abstract class BaseEmailTransport : IEmailTransport
                 }
                 await SendEmailAsync(message, cancelToken);
                 return true;
-            } catch (TransportConnectionException tce)
+            } catch (TransportConnectionException ex)
             {
-                Logger?.LogError(tce, "Failed to send message.");
+                Logger?.LogError(ex, "Failed to send message.");
+                // Disconnect just in case if the connection is bad.
                 if (IsConnected)
                 {
                     await DisconnectAsync(cancelToken);
+                }
+                // There is no point in retrying if a fatal exception occurred.
+                if (ex.IsFatal)
+                {
+                    break;
                 }
             }
         } while (attempts++ < Options.MaxRetries);
