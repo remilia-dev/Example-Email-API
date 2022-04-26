@@ -1,5 +1,8 @@
-﻿namespace Mailer.Core.Model;
+﻿using System.Text.Json.Serialization;
 
+namespace Mailer.Core.Model;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum RecipientType
 {
     To = 0,
