@@ -3,57 +3,65 @@ using Mailer.Core.Services;
 using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Net.Sockets;
 
 namespace Mailer.MailKit;
 
-public class SmtpEmailTransport : IEmailTransport, IDisposable
+public class SmtpEmailTransport : BaseEmailTransport, IDisposable
 {
-    private readonly SmtpConnectionOptions _options;
-    private readonly SmtpClient _smtp;
+    protected override SmtpConnectionOptions Options { get; }
+    protected SmtpClient SmtpClient { get; }
 
     public SmtpEmailTransport(IOptions<SmtpConnectionOptions> options)
     {
-        _options = options.Value;
-        _smtp = new SmtpClient();
+        Options = options.Value;
+        SmtpClient = new SmtpClient();
     }
 
     public void Dispose()
     {
-        _smtp.Dispose();
+        SmtpClient.Dispose();
         GC.SuppressFinalize(this);
     }
 
-    public bool IsConnected => _smtp.IsConnected;
+    protected override bool IsConnected => SmtpClient.IsConnected;
 
-    public async Task ConnectAsync(CancellationToken cancelToken = default)
+    protected override async Task ConnectAsync(CancellationToken cancelToken = default)
     {
+        Logger?.LogDebug("Connecting to SMTP server.");
         try
         {
-            await _smtp.ConnectAsync(_options.Host, _options.Port, cancellationToken: cancelToken);
-            if (_options.Username != null)
+            await SmtpClient.ConnectAsync(Options.Host, Options.Port, cancellationToken: cancelToken);
+            if (Options.Username != null)
             {
-                await _smtp.AuthenticateAsync(_options.Username, _options.Password, cancelToken);
+                Logger?.LogDebug("Authenticating with SMTP server.");
+                await SmtpClient.AuthenticateAsync(Options.Username, Options.Password, cancelToken);
             }
-        } catch (Exception ex) when (ex is SocketException or IOException or ProtocolException)
+        }
+        catch (Exception ex) when (ex is SocketException or IOException or ProtocolException)
         {
             throw new TransportConnectionException("Failed to connect to SMTP server.", ex);
-        } catch (AuthenticationException ex)
+        }
+        catch (AuthenticationException ex)
         {
             throw new TransportConnectionException("Failed to authenticate with SMTP server.", ex);
         }
     }
 
-    public Task DisconnectAsync(CancellationToken cancelToken = default)
-        => _smtp.DisconnectAsync(true, cancelToken);
+    protected override Task DisconnectAsync(CancellationToken cancelToken = default)
+    {
+        Logger?.LogDebug("Disconnecting from SMTP server.");
+        return SmtpClient.DisconnectAsync(true, cancelToken);
+    }
 
-    public async Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken = default)
+    protected override async Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken = default)
     {
         try
         {
-            await _smtp.SendAsync(message.ToMimeMessage(), cancelToken);
+            await SmtpClient.SendAsync(message.ToMimeMessage(), cancelToken);
         }
         catch (ServiceNotConnectedException ex)
         {
