@@ -15,8 +15,9 @@ public class SmtpEmailTransport : BaseEmailTransport, IDisposable
     protected override SmtpConnectionOptions Options { get; }
     protected SmtpClient SmtpClient { get; }
 
-    public SmtpEmailTransport(IOptions<SmtpConnectionOptions> options)
+    public SmtpEmailTransport(IOptions<SmtpConnectionOptions> options, ILogger<SmtpEmailTransport>? logger)
     {
+        Logger = logger;
         Options = options.Value;
         SmtpClient = new SmtpClient();
     }
