@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Mailer.Core.Data;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Mailer.Core.Services;
@@ -21,7 +22,17 @@ public class BackgroundEmailService : BackgroundService
             await _emailQueue.WaitForEmail(stoppingToken);
 
             using var scope = _serviceProvider.CreateAsyncScope();
+            var db = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
             var transport = scope.ServiceProvider.GetRequiredService<IEmailTransport>();
+            transport.OnEmailResult += (email, successful, cancelToken) =>
+            {
+                email.WasSent = successful;
+                db.Messages.Attach(email)
+                    .Property(em => em.WasSent)
+                    .IsModified = true;
+                return db.SaveChangesAsync(cancelToken);
+            };
+
             await transport.SendQueuedEmailsAsync(_emailQueue, stoppingToken);
         }
     }
