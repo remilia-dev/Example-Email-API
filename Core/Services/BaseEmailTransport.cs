@@ -5,23 +5,28 @@ namespace Mailer.Core.Services;
 
 public abstract class BaseEmailTransport : IEmailTransport
 {
+    public event IEmailTransport.EmailResultHandler? OnEmailResult;
     protected ILogger? Logger { get; set; }
     protected abstract BaseEmailTransportOptions Options { get; }
-
     protected abstract bool IsConnected { get; }
-    protected abstract Task ConnectAsync(CancellationToken cancelToken);
-    protected abstract Task DisconnectAsync(CancellationToken cancelToken);
-    protected abstract Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken);
 
     public async Task SendQueuedEmailsAsync(IEmailQueue emailQueue, CancellationToken cancelToken = default)
     {
         var message = emailQueue.TryDequeue();
         while (message is not null)
         {
-            await TrySendEmailAsync(message, cancelToken);
+            bool successful = await TrySendEmailAsync(message, cancelToken);
+            if (OnEmailResult is not null)
+            {
+                await OnEmailResult.Invoke(message, successful, cancelToken);
+            }
             message = emailQueue.TryDequeue();
         }
     }
+
+    protected abstract Task ConnectAsync(CancellationToken cancelToken);
+    protected abstract Task DisconnectAsync(CancellationToken cancelToken);
+    protected abstract Task SendEmailAsync(EmailMessage message, CancellationToken cancelToken);
 
     protected async Task<bool> TrySendEmailAsync(EmailMessage message, CancellationToken cancelToken = default)
     {
