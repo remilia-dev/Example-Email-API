@@ -73,13 +73,13 @@ public class SmtpEmailTransport : BaseEmailTransport, IDisposable
         {
             throw new TransportConnectionException(
                 "SMTP server requires authentication but none was provided.",
-                ex);
+                ex, isFatal: true);
         }
         catch (Exception ex) when (ex is InvalidOperationException or ParseException)
         {
             throw new TransportConnectionException(
                 "Email message is invalid and cannot be sent.",
-                ex);
+                ex, isFatal: true);
         }
         catch (Exception ex) when (ex is IOException or ProtocolException or CommandException)
         {
