@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Mailer.Core.csproj" />
+    <ProjectReference Include="..\MailKit\Mailer.MailKit.csproj" />
   </ItemGroup>
 
 </Project>

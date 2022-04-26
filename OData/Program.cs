@@ -3,6 +3,8 @@ using Mailer.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData;
 using Mailer.OData;
+using Mailer.Core.Services;
+using Mailer.MailKit;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add Services
@@ -18,6 +20,19 @@ builder.Services.AddDbContext<EmailDbContext>(options =>
 });
 builder.Services.AddControllers()
     .AddOData(opt => opt.AddRouteComponents("api/v1", EdmModelBuilder.GetV1Model()));
+
+// Email Services
+builder.Services.Configure<SmtpConnectionOptions>(options =>
+{
+    builder.Configuration.GetSection("SmtpConnection").Bind(options);
+    // Ensure sensitive data logging is turned off in non-debug builds.
+#if !DEBUG
+    options.LogSensitiveData = false;
+#endif
+});
+builder.Services.AddScoped<IEmailTransport, SmtpEmailTransport>();
+builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
+builder.Services.AddHostedService<BackgroundEmailService>();
 
 var app = builder.Build();
 // Configure Pipeline
