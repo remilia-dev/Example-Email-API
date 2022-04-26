@@ -14,6 +14,8 @@ public static class EdmModelBuilder
             .Count()
             .Expand(0, SelectExpandType.Automatic, "Recipients")
             .Filter("Sender", "WasSent", "CreatedOn")
+            // Allows filtering message by recipient addresses and types
+            .Filter("Recipients", "Address", "Type")
             .Select()
             .OrderBy("Sender", "CreatedOn")
             .Page(50, 25);
