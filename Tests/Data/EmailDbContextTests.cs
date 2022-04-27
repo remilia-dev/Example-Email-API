@@ -3,6 +3,7 @@ using Mailer.Core.Model;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,35 +33,78 @@ public class EmailDbContextTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task NewMessages_HaveCorrectCreatedAndLastModifiedTime()
+    public async Task EmailMessage_CreatedOn_HasCorrectValueForNewRecords()
     {
-        var message = new EmailMessage();
+        var message = BlankEmailMessage();
         await _context.Messages.AddAsync(message);
         var beforeSave = DateTime.UtcNow;
         await _context.SaveChangesAsync();
         var afterSave = DateTime.UtcNow;
 
         Assert.InRange(message.CreatedOn, beforeSave, afterSave);
-        // CreationOn and LastModifiedOn should be exactly the same on new messages.
+    }
+
+    [Fact]
+    public async Task EmailMessage_CreatedOn_DoesNotChangeOnModifiedRecords()
+    {
+        var message = BlankEmailMessage();
+        await _context.Messages.AddAsync(message);
+        await _context.SaveChangesAsync();
+
+        var previousCreatedOn = message.CreatedOn;
+        message.WasSent = false;
+        await _context.SaveChangesAsync();
+
+        Assert.Equal(previousCreatedOn, message.CreatedOn);
+    }
+
+    [Fact]
+    public async Task EmailMessage_CreatedOn_ThrowsOnSaveIfChanged()
+    {
+        var message = BlankEmailMessage();
+        await _context.Messages.AddAsync(message);
+        await _context.SaveChangesAsync();
+
+        var previousCreatedOn = message.CreatedOn;
+        message.CreatedOn = DateTime.MaxValue;
+
+        await Assert.ThrowsAsync<InvalidOperationException>(()
+            => _context.SaveChangesAsync());
+    }
+
+    [Fact]
+    public async Task EmailMessage_LastModifiedOn_SameAsCreatedOnForNewRecords()
+    {
+        var message = BlankEmailMessage();
+        await _context.Messages.AddAsync(message);
+        await _context.SaveChangesAsync();
+
         Assert.Equal(message.CreatedOn, message.LastModifiedOn);
     }
 
     [Fact]
-    public async Task UpdatedMessages_HaveOnlyLastModifiedOnUpdated()
+    public async Task EmailMessage_LastModifiedOn_UpdatedOnModifiedRecords()
     {
-        var message = new EmailMessage();
+        var message = BlankEmailMessage();
         await _context.Messages.AddAsync(message);
         await _context.SaveChangesAsync();
-        var previousCreatedOn = message.CreatedOn;
 
-        message.Subject = "A Change Occured";
+        message.WasSent = false;
         var beforeSave = DateTime.UtcNow;
         await _context.SaveChangesAsync();
         var afterSave = DateTime.UtcNow;
 
         Assert.InRange(message.LastModifiedOn, beforeSave, afterSave);
-        Assert.NotEqual(message.CreatedOn, message.LastModifiedOn);
-        // The CreatedOn field did *not* change due to modifications
-        Assert.Equal(previousCreatedOn, message.CreatedOn);
+    }
+
+    private static EmailMessage BlankEmailMessage()
+    {
+        return new EmailMessage()
+        {
+            Sender = "",
+            Subject = "",
+            HtmlBody = "",
+            Recipients = new List<EmailRecipient>(),
+        };
     }
 }
