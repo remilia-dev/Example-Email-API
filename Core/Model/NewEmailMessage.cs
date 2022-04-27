@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Mailer.Core.Model;
-public class NewEmailMessage : IValidatableObject
+public class NewEmailMessage
 {
     [Required]
     [EmailAddress]
@@ -12,7 +12,7 @@ public class NewEmailMessage : IValidatableObject
     public string? HtmlBody { get; set; }
     [Required]
     [MinLength(1)]
-    public virtual ICollection<EmailRecipient>? Recipients { get; set; }
+    public virtual ICollection<NewEmailRecipient>? Recipients { get; set; }
 
     public EmailMessage ToEmailMessage()
     {
@@ -21,31 +21,7 @@ public class NewEmailMessage : IValidatableObject
             Sender = Sender,
             Subject = Subject,
             HtmlBody = HtmlBody,
-            Recipients = Recipients,
+            Recipients = Recipients?.Select(r => r.ToEmailRecipient()).ToList(),
         };
-    }
-
-    public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (Recipients == null)
-        {
-            yield break;
-        }
-
-        foreach (var recipient in Recipients)
-        {
-            if (recipient.Id != 0)
-            {
-                yield return new ValidationResult("Id cannot be specified in any Recipient.");
-            }
-            if (recipient.MessageId != 0)
-            {
-                yield return new ValidationResult("MessageId cannot be specified in any Recipient.");
-            }
-            if (recipient.Message is not null)
-            {
-                yield return new ValidationResult("Message cannot be specified in any Recipient.");
-            }
-        }
     }
 }

@@ -8,7 +8,6 @@ public class EmailRecipient
 {
     public int Id { get; set; }
     public int MessageId { get; set; }
-    [EmailAddress]
     public string Address { get; set; }
     [Range(typeof(RecipientType), "Min", "Max")]
     public RecipientType Type { get; set; }
