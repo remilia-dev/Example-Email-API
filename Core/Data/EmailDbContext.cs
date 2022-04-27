@@ -45,7 +45,7 @@ public class EmailDbContext : DbContext
     {
         modelBuilder.Entity<EmailMessage>()
             .Property(e => e.CreatedOn)
-            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);
         modelBuilder.Entity<EmailRecipient>()
             .Property(e => e.Type)
             .HasConversion<int>();
