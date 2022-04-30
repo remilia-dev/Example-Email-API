@@ -18,7 +18,7 @@ public abstract class BaseEmailTransport : IEmailTransport
             bool successful = await TrySendEmailAsync(message, cancelToken);
             if (OnEmailResult is not null)
             {
-                await OnEmailResult.Invoke(message, successful, cancelToken);
+                await OnEmailResult.Invoke(message, successful);
             }
             message = emailQueue.TryDequeue();
         }

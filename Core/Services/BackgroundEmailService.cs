@@ -24,13 +24,13 @@ public class BackgroundEmailService : BackgroundService
             using var scope = _serviceProvider.CreateAsyncScope();
             var db = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
             var transport = scope.ServiceProvider.GetRequiredService<IEmailTransport>();
-            transport.OnEmailResult += (email, successful, cancelToken) =>
+            transport.OnEmailResult += (email, successful) =>
             {
                 email.WasSent = successful;
                 db.Messages.Attach(email)
                     .Property(em => em.WasSent)
                     .IsModified = true;
-                return db.SaveChangesAsync(cancelToken);
+                return db.SaveChangesAsync();
             };
 
             await transport.SendQueuedEmailsAsync(_emailQueue, stoppingToken);
