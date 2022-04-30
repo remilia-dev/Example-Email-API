@@ -7,6 +7,7 @@ namespace Mailer.Core.Model;
 [Index(nameof(Address))]
 public class EmailRecipient
 {
+    [EmailAddress]
     public string Address { get; set; }
     [Range(typeof(RecipientType), "Min", "Max")]
     public RecipientType Type { get; set; }

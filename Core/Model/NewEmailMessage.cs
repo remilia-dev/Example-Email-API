@@ -12,7 +12,7 @@ public class NewEmailMessage
     public string? HtmlBody { get; set; }
     [Required]
     [MinLength(1)]
-    public virtual ICollection<NewEmailRecipient>? Recipients { get; set; }
+    public virtual ICollection<EmailRecipient>? Recipients { get; set; }
 
     public EmailMessage ToEmailMessage()
     {
@@ -21,7 +21,7 @@ public class NewEmailMessage
             Sender = Sender,
             Subject = Subject,
             HtmlBody = HtmlBody,
-            Recipients = Recipients?.Select(r => r.ToEmailRecipient()).ToList(),
+            Recipients = Recipients,
         };
     }
 }
