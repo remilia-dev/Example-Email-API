@@ -35,7 +35,7 @@ public class SmtpEmailTransport : BaseEmailTransport, IDisposable
         Logger?.LogDebug("Connecting to SMTP server.");
         try
         {
-            await SmtpClient.ConnectAsync(Options.Host, Options.Port, cancellationToken: cancelToken);
+            await SmtpClient.ConnectAsync(Options.Host, Options.Port, Options.SecureSocketOptions, cancelToken);
             if (Options.Username != null)
             {
                 Logger?.LogDebug("Authenticating with SMTP server.");

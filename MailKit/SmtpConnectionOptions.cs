@@ -11,6 +11,7 @@ public class SmtpConnectionOptions : BaseEmailTransportOptions, IValidatableObje
     public int Port { get; set; } = 0;
     public string? Username { get; set; }
     public string? Password { get; set; }
+    public SecureSocketOptions SecureSocketOptions { get; set; } = SecureSocketOptions.Auto;
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
