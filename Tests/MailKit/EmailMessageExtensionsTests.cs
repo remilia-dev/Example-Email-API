@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Mailer.Core.Model;
 using Mailer.MailKit;
@@ -61,7 +62,47 @@ public class EmailMessageExtensionsTests
     }
 
     [Fact]
-    public void ToMimeMessage_Throws_OnInvalidSender()
+    public void ToMimeMessage_ThrowsInvalidOperationException_OnNullSender()
+    {
+        var message = ValidEmailMessage();
+        message.Sender = null;
+
+        Assert.Throws<InvalidOperationException>(()
+            => message.ToMimeMessage());
+    }
+
+    [Fact]
+    public void ToMimeMessage_ThrowsInvalidOperationException_OnNullSubject()
+    {
+        var message = ValidEmailMessage();
+        message.Subject = null;
+
+        Assert.Throws<InvalidOperationException>(()
+            => message.ToMimeMessage());
+    }
+
+    [Fact]
+    public void ToMimeMessage_ThrowsInvalidOperationException_OnNullHtmlBody()
+    {
+        var message = ValidEmailMessage();
+        message.HtmlBody = null;
+
+        Assert.Throws<InvalidOperationException>(()
+            => message.ToMimeMessage());
+    }
+
+    [Fact]
+    public void ToMimeMessage_ThrowsInvalidOperationException_OnNullRecipients()
+    {
+        var message = ValidEmailMessage();
+        message.Recipients = null;
+
+        Assert.Throws<InvalidOperationException>(()
+            => message.ToMimeMessage());
+    }
+
+    [Fact]
+    public void ToMimeMessage_ThrowsParseException_OnInvalidSender()
     {
         var message = ValidEmailMessage();
         message.Sender = "not a valid email";
@@ -71,7 +112,7 @@ public class EmailMessageExtensionsTests
     }
 
     [Fact]
-    public void ToMimeMessage_Throws_OnInvalidRecipientAddress()
+    public void ToMimeMessage_ThrowsParseException_OnInvalidRecipientAddress()
     {
         var message = ValidEmailMessage();
         message.Recipients!.Add(new EmailRecipient("not a valid email"));
