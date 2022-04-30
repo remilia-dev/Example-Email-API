@@ -20,12 +20,6 @@ public static class EdmModelBuilder
             .OrderBy("Sender", "CreatedOn")
             .Page(50, 25);
 
-        builder.EntitySet<EmailRecipient>("Recipients").EntityType
-            .Expand(0, "Message")
-            .Filter("Address", "Type")
-            .OrderBy("Address")
-            .Page(50, 25);
-
         return builder.GetEdmModel();
     }
 }
