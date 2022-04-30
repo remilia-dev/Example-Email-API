@@ -22,14 +22,17 @@ builder.Services.AddControllers()
     .AddOData(opt => opt.AddRouteComponents("api/v1", EdmModelBuilder.GetV1Model()));
 
 // Email Services
-builder.Services.Configure<SmtpConnectionOptions>(options =>
-{
-    builder.Configuration.GetSection("SmtpConnection").Bind(options);
-    // Ensure sensitive data logging is turned off in non-debug builds.
+builder.Services.AddOptions<SmtpConnectionOptions>()
+    .BindConfiguration("SmtpConnection")
+    .ValidateDataAnnotations()
+    .ValidateOnStart()
+    .PostConfigure(options =>
+    {
 #if !DEBUG
-    options.LogSensitiveData = false;
+        // Ensure sensitive data logging is turned off in non-debug builds.
+        options.LogSensitiveData = false;
 #endif
-});
+    });
 builder.Services.AddScoped<IEmailTransport, SmtpEmailTransport>();
 builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
 builder.Services.AddHostedService<BackgroundEmailService>();
