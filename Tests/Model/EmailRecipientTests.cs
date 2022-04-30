@@ -1,4 +1,5 @@
 ﻿using Mailer.Core.Model;
+using System;
 using Xunit;
 
 namespace Mailer.Tests.Model;
@@ -6,9 +7,17 @@ namespace Mailer.Tests.Model;
 public class EmailRecipientTests
 {
     [Fact]
-    public void Recipient_Type_DefaultsToTo()
+    public void Constructor_Type_DefaultsToTo()
     {
-        Assert.Equal(RecipientType.To,
-            new EmailRecipient("valid@example.org").Type);
+        var recipient = new EmailRecipient("");
+
+        Assert.Equal(RecipientType.To, recipient.Type);
+    }
+
+    [Fact]
+    public void Constructor_ThrowsArgumentNullException_WhenAddressIsNull()
+    {
+        Assert.Throws<ArgumentNullException>(()
+            => new EmailRecipient(null!));
     }
 }

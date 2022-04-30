@@ -13,7 +13,8 @@ public class EmailRecipient
 
     public EmailRecipient(string address, RecipientType type = RecipientType.To)
     {
-        Address = address;
+        Address = address
+            ?? throw new ArgumentNullException(nameof(address));
         Type = type;
     }
 }
