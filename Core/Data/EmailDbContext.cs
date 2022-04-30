@@ -7,7 +7,6 @@ namespace Mailer.Core.Data;
 public class EmailDbContext : DbContext
 {
     public DbSet<EmailMessage> Messages => Set<EmailMessage>();
-    public DbSet<EmailRecipient> Recipients => Set<EmailRecipient>();
 
     public EmailDbContext(DbContextOptions options) : base(options) { }
 
@@ -46,8 +45,5 @@ public class EmailDbContext : DbContext
         modelBuilder.Entity<EmailMessage>()
             .Property(e => e.CreatedOn)
             .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);
-        modelBuilder.Entity<EmailRecipient>()
-            .Property(e => e.Type)
-            .HasConversion<int>();
     }
 }
