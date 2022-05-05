@@ -26,7 +26,7 @@ public class EmailQueue : IEmailQueue
     public Task EnqueueAsync(EmailMessage message, CancellationToken cancelToken = default)
         => _channel.Writer.WriteAsync(message, cancelToken).AsTask();
 
-    public Task WaitForEmail(CancellationToken cancelToken = default)
+    public Task WaitForEmailAsync(CancellationToken cancelToken = default)
         => _channel.Reader.WaitToReadAsync(cancelToken).AsTask();
 
     public EmailMessage? TryDequeue()

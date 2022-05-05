@@ -21,7 +21,7 @@ public interface IEmailQueue
     /// <returns>
     /// A <see cref="Task"/> that will complete when an email is in the queue.
     /// </returns>
-    Task WaitForEmail(CancellationToken cancelToken = default);
+    Task WaitForEmailAsync(CancellationToken cancelToken = default);
     /// <summary>
     /// Attempts to remove an email message from the queue.
     /// </summary>

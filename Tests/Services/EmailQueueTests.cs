@@ -16,7 +16,7 @@ public class EmailQueueTests
         var emailQueue = new EmailQueue();
 
         await Assert.ThrowsAsync<TaskCanceledException>(()
-            => emailQueue.WaitForEmail(cancelSource.Token));
+            => emailQueue.WaitForEmailAsync(cancelSource.Token));
     }
 
     [Fact]

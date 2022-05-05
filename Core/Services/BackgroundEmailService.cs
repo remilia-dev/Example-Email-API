@@ -19,7 +19,7 @@ public class BackgroundEmailService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await _emailQueue.WaitForEmail(stoppingToken);
+            await _emailQueue.WaitForEmailAsync(stoppingToken);
 
             using var scope = _serviceProvider.CreateAsyncScope();
             var db = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
