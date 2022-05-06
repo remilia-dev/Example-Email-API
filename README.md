@@ -15,7 +15,7 @@ The provided appsettings does not contain the necessary configuration
 information to connect to an SMTP server (which is needed to send emails).
 Below is an example of what the configuration should look like and an
 explaination of each option:
-```json
+```json5
 {
     "SmtpConnection": {
         // SMTP server host (required)
