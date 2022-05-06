@@ -12,6 +12,7 @@ namespace Mailer.MailKit;
 
 public class SmtpEmailTransport : BaseEmailTransport, IDisposable
 {
+    protected override ILogger? Logger { get; }
     protected override SmtpConnectionOptions Options { get; }
     protected SmtpClient SmtpClient { get; }
 

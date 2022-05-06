@@ -9,7 +9,7 @@ public abstract class BaseEmailTransport : IEmailTransport
     /// <summary>
     /// A logger to log failed attempts at sending emails.
     /// </summary>
-    protected ILogger? Logger { get; set; }
+    protected abstract ILogger? Logger { get; }
     /// <summary>
     /// Options that customize the behavior of email transportation.
     /// </summary>
