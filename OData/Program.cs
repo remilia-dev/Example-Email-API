@@ -1,5 +1,4 @@
 using Mailer.Core.Data;
-using Mailer.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData;
 using Mailer.OData;
@@ -42,37 +41,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseODataRouteDebug();
+    // Migrate the database
+    using var scope = app.Services.CreateAsyncScope();
+    var db = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
+    await db.Database.MigrateAsync();
 }
+
 app.UseODataQueryRequest();
 app.UseRouting();
-
 app.MapControllers();
 
-await CreateDatabaseAsync(app.Services);
-
 app.Run();
-
-// TODO: Move Database Creation/Seeding
-static async Task CreateDatabaseAsync(IServiceProvider services)
-{
-    await using var scope = services.CreateAsyncScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<EmailDbContext>();
-    await dbContext.Database.EnsureCreatedAsync();
-
-    if (!dbContext.Messages.Any())
-    {
-        var message = new EmailMessage()
-        {
-            Sender = "example@example.org",
-            Subject = "Hallo",
-            Recipients = new List<EmailRecipient>()
-            {
-                new EmailRecipient("to@example.org"),
-                new EmailRecipient("to_someone@example.org"),
-                new EmailRecipient("cc@example.org", RecipientType.Cc),
-            },
-        };
-        dbContext.Messages.Add(message);
-        await dbContext.SaveChangesAsync();
-    }
-}
