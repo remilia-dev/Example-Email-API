@@ -50,7 +50,7 @@ dotnet run --project OData --launch-profile ODataAPI
 
 ### API Requests
 
-You can import the example [postman collection](API Examples.postman_collection.json)
+You can import the example [postman collection](API%20Examples.postman_collection.json)
 into postman to experiment with the API. Here is a quick summary of the API:
 
 | HTTP Verb | API Path             | Action                                   |
