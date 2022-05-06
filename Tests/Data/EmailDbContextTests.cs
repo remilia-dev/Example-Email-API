@@ -1,6 +1,5 @@
 ﻿using Mailer.Core.Data;
 using Mailer.Core.Model;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,12 +14,8 @@ public class EmailDbContextTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var connection = new SqliteConnection("Data Source=:memory:");
-        await connection.OpenAsync();
-        // By passing an open connection, the DbContext will not automatically close the connection.
-        // This is important as closing the connection just deletes the in-memory database.
         var options = new DbContextOptionsBuilder()
-            .UseSqlite(connection)
+            .UseSqlServer(Utilities.GetTestConnectionString<EmailDbContextTests>())
             .Options;
         _context = new EmailDbContext(options);
         await _context.Database.EnsureCreatedAsync();
@@ -28,7 +23,7 @@ public class EmailDbContextTests : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await _context.Database.CloseConnectionAsync();
+        await _context.Database.EnsureDeletedAsync();
         await _context.DisposeAsync();
     }
 
