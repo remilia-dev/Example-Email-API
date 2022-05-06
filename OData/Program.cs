@@ -12,7 +12,6 @@ builder.Services.AddDbContext<EmailDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("EmailDatabase");
     options.UseSqlServer(connectionString);
-    options.UseLazyLoadingProxies();
 #if DEBUG
     options.EnableSensitiveDataLogging();
     options.EnableDetailedErrors();
